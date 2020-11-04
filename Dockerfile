@@ -2,11 +2,12 @@ FROM node:12
 
 WORKDIR /opt
 
-COPY package.json yarn.lock ./
-RUN yarn install --frozen-lockfile --no-interactive
+COPY package.json package-lock.json ./
+RUN npm install 
 
 COPY lib ./lib
 COPY express ./express
 
-EXPOSE 8080
+
+EXPOSE 8000
 CMD [ "node", "express/app.js" ]
