@@ -1,8 +1,8 @@
 ## Example usage
 
 1. `docker build . -t pdf-to-image`
-2. `docker run --rm --publish 8080:8080 --name pdf-to-image pdf-to-image`
-3. Open http://localhost:8080 and enter a PDF URL to convert
+2. `docker run --rm --publish 8000:8000 --name pdf-to-image pdf-to-image`
+3. Open http://localhost:8000 and enter a PDF URL to convert
 
 
 
@@ -18,10 +18,23 @@
         + x_bottom
         + y_bottom
         + scale
-    Example of position_list, view detail in cli/convert.js : <code>[
+
+
+Example of position_list, view detail in cli/convert.js : 
+
+```
+[
         {pageNumber: 1, x_top: 1, y_top: 1, x_bottom: 300, y_bottom: 300, scale: 2},
         {pageNumber: 2, x_top: 1, y_top: 1, x_bottom: 300, y_bottom: 300, scale: 2},
         {pageNumber: 3, x_top: 100, y_top: 100, x_bottom: 200, y_bottom: 300, scale: 2}
-  ]</code>
+]
+```
 
-  3. Return type is array of base64 image
+ Return type is array of base64 image
+
+
+## Testing
+
+``` 
+node cli/convert.js
+```
