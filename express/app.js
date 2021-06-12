@@ -2,7 +2,6 @@ const express = require('express')
 const convert = require('../lib/convert')
 const sharp = require('sharp')
 const bodyParser = require('body-parser')
-const { MissingDataException, async } = require('pdfjs-dist/build/pdf.worker')
 
 async function resizeImage(image){
   let base64;

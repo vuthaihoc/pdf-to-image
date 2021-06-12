@@ -1635,7 +1635,7 @@
   "resolved" "https://registry.npmjs.org/path-to-regexp/-/path-to-regexp-0.1.7.tgz"
   "version" "0.1.7"
 
-"pdfjs-dist@^2.3.200":
+"pdfjs-dist@^2.7":
   "integrity" "sha512-2IKw7wP1RnzzWJcpkeZwF+cKROFiQext+/WburB6cgKwt9zc8rOyDH7a3FepdcciSGs8SDs/AuWe8qVx+iI6pw=="
   "resolved" "https://registry.npmjs.org/pdfjs-dist/-/pdfjs-dist-2.8.335.tgz"
   "version" "2.8.335"
