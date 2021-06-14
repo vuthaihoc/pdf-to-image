@@ -6,9 +6,9 @@
   "dependencies": {
     "canvas": "^2.8.0",
     "express": "^4.17.1",
-    "pdfjs-dist": "^2.9",
     "request": "^2.88.2",
-    "sharp": "^0.26"
+    "sharp": "^0.26",
+    "sha1": "^1.1.1"
   },
   "devDependencies": {
     "nodemon": "^2.0.6"

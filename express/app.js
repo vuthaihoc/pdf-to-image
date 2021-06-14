@@ -2,6 +2,10 @@ const express = require('express')
 const convert = require('../lib/convert')
 const sharp = require('sharp')
 const bodyParser = require('body-parser')
+const WorkQueue = require('../lib/workqueue')
+const sha1 = require('sha1')
+
+const workQueue = new WorkQueue()
 
 async function resizeImage(image){
   let base64;
@@ -26,57 +30,40 @@ async function convertPdfToBase64(url, position_list) {
 }
 
 
-
 const routes = {
   index: (req, res) => {
     res.sendFile(__dirname + '/index.html')
   },
+  convert: (req, res, next) => {
 
-  convert: (req, res, next) => { 
-    let url = req.query.url
-    let position_list = req.query.position_list
-    if (req.method === 'POST') {
-      url = req.body.url
-      position_list = req.body.position_list
-    }
+    const queueKey = sha1(req.__domain + req.url)
 
-    convertPdfToBase64(url, position_list)
-      .then(function (result) {
-        res.json(result)
-      })
-      .catch(function (err) {
-        if(err instanceof TypeError){
-          res.status(400).send('invalid position_list, see readme file for correct example ')
-        } else{
-          res.status(400).send('error rendering image: ' + err.message)
-        }
-      })
-  },
-
-  test: (req, res, next) => {
     const { mimeType = 'image/jpeg', pageNumber = 1, scale = 1.0, url } = req.query
-    convert({
-      mimeType,
-      pageNumber: Number(pageNumber),
-      scale: Number(scale),
-      source: { url }
+
+    return workQueue
+    .run(queueKey, () => {
+      return convert({
+        mimeType,
+        pageNumber: Number(pageNumber),
+        scale: Number(scale),
+        source: { url }
+      })
     }).then(buffer => {
       res.type(mimeType).send(buffer)
     }).catch(error => {
       next(error)
+    }).catch(err => {
+      console.log(err)
+      res.end("Error " + err.message)
     })
   }
 }
 
 const server = express()
-  .use(bodyParser.json())
-  .use(bodyParser.urlencoded({ extended: true }))
-  .get('/', routes.index)
-  .get('/convert', routes.convert)
-  .post('/convert', routes.convert)
-  .get('/test', routes.test)
-  .listen(process.env.PORT || 8000, () => {
-    const address = server.address()
-    console.info(`Ready at http://localhost:${address.port}`)
-  })
+.get('/', routes.index)
+.get('/convert', routes.convert)
+.listen(process.env.PORT || 8080, () => {
+  const address = server.address()
+  console.info(`Ready at http://localhost:${address.port}`)
+})
 

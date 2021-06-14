@@ -1,0 +1,12 @@
+apps:
+  - script : ./express/app.js
+    exec_mode : "cluster"
+    instances : 3
+    name     : 'pdftoimage'
+    env:
+      NODE_PORT : 5881
+      PORT : 5881
+    autorestart : true
+    restart_delay : 10000
+    max_memory_restart : 1000M
+    log_date_format : MM-DD HH:mm
